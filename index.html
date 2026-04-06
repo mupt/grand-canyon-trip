@@ -383,7 +383,8 @@
   </div>
   <div class="header-actions">
     <div class="storage-badge" id="storageBadge">IndexedDB: empty</div>
-    <button class="btn primary" onclick="loadFromFiles()">Load data/</button>
+    <button class="btn primary" onclick="loadFromSite()">Download All</button>
+    <button class="btn" onclick="loadFromFiles()">Load files</button>
     <button class="btn" onclick="saveCurrentPage()">Save Page</button>
     <button class="btn danger" onclick="clearStorage()">Clear</button>
   </div>
@@ -566,6 +567,45 @@ function navigateTo(url) {
   const page = allPages.find(p => p.key === key || p.url === url);
   if (page) showPage(page);
   else toast(`Page not downloaded: ${url.replace('https://www.nps.gov','')}`, 'red');
+}
+
+// ── Load from site (GitHub Pages) ────────────────────────────────────────────
+async function loadFromSite() {
+  const base = window.location.origin + window.location.pathname.replace(/\/?$/, '/');
+  toast('Fetching index...', '');
+
+  let index;
+  try {
+    const r = await fetch(base + 'data/index.json');
+    if (!r.ok) throw new Error(`index.json: ${r.status}`);
+    index = await r.json();
+  } catch (e) {
+    toast('Failed to load index: ' + e.message, 'red');
+    return;
+  }
+
+  let count = 0;
+  const total = index.length;
+  for (const entry of index) {
+    try {
+      const r = await fetch(base + entry.file);
+      if (!r.ok) continue;
+      const data = await r.json();
+      const record = {
+        key:        entry.key,
+        url:        data.url,
+        title:      data.title || entry.title,
+        html:       data.html  || '',
+        scraped_at: data.scraped_at || null,
+      };
+      await dbPut(record);
+      count++;
+      if (count % 20 === 0) toast(`Downloaded ${count}/${total}...`, '');
+    } catch { /* skip */ }
+  }
+
+  await refreshFromDB();
+  toast(`Downloaded ${count} pages into offline storage`, 'green');
 }
 
 // ── Load files ───────────────────────────────────────────────────────────────
