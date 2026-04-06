@@ -571,7 +571,7 @@ function navigateTo(url) {
 
 // ── Load from site (GitHub Pages) ────────────────────────────────────────────
 async function loadFromSite() {
-  const base = window.location.origin + window.location.pathname.replace(/\/?$/, '/');
+  const base = window.location.href.replace(/\/[^\/]*$/, '/').replace(/\/$/, '') + '/';
   toast('Fetching index...', '');
 
   let index;
