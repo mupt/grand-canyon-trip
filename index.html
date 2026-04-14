@@ -1,732 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grand Canyon — Offline Guide</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cute Cats</title>
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --border: #21262d;
-      --border-bright: #30363d;
-      --text: #e6edf3;
-      --muted: #8b949e;
-      --accent: #58a6ff;
-      --green: #3fb950;
-      --orange: #d29922;
-      --red: #f85149;
-      --canyon: #c2620a;
-      --canyon-light: #e8843a;
-      --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
     body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.6;
-      display: flex;
-      flex-direction: column;
+      font-family: 'Georgia', serif;
+      background: #fff9f0;
+      color: #3a2a1a;
       min-height: 100vh;
     }
 
-    /* HEADER */
     header {
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      background: rgba(13,17,23,0.95);
-      backdrop-filter: blur(8px);
-      z-index: 100;
-      flex-shrink: 0;
+      background: #ff8fab;
+      text-align: center;
+      padding: 2.5rem 1rem 2rem;
+      box-shadow: 0 4px 12px rgba(255,100,130,0.2);
     }
 
-    .logo {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--canyon-light);
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    header h1 {
+      font-size: 3.5rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-shadow: 2px 3px 0 #e0608a;
     }
 
-    .logo-icon { font-size: 1.1rem; }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+      color: #ffe0eb;
     }
 
-    .btn {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      padding: 5px 12px;
-      border-radius: 5px;
-      border: 1px solid var(--border-bright);
-      background: var(--surface);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .btn:hover { border-color: var(--accent); color: var(--accent); }
-    .btn.primary { border-color: var(--canyon); color: var(--canyon-light); background: rgba(194,98,10,0.1); }
-    .btn.primary:hover { background: rgba(194,98,10,0.2); }
-    .btn.danger:hover { border-color: var(--red); color: var(--red); }
-
-    .storage-badge {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--muted);
-      padding: 4px 10px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-    }
-    .storage-badge.has-data { border-color: var(--green); color: var(--green); }
-
-    /* LAYOUT */
-    .app {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-      height: calc(100vh - 52px);
-    }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 280px;
-      flex-shrink: 0;
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .sidebar-top {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    #search {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 7px 10px;
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    #search:focus { border-color: var(--accent); }
-    #search::placeholder { color: #444d56; }
-
-    .page-count {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-
-    .page-list {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 0;
-    }
-
-    .page-item {
-      padding: 9px 16px;
-      cursor: pointer;
-      border-left: 2px solid transparent;
-      transition: all 0.1s;
-    }
-    .page-item:hover { background: var(--surface); }
-    .page-item.active {
-      background: var(--surface);
-      border-left-color: var(--canyon-light);
-    }
-
-    .page-item-title {
-      font-size: 0.82rem;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .page-item-url {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .page-item .saved-dot {
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--green);
-      margin-left: 5px;
-      vertical-align: middle;
-    }
-
-    /* MAIN CONTENT */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-
-    .content-bar {
-      padding: 10px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-shrink: 0;
-    }
-
-    .content-title {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .content-url {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    .content-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
-    .scraped-at {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-    }
-
-    .viewer {
-      flex: 1;
-      overflow-y: auto;
-      padding: 32px 40px;
-    }
-
-    /* NPS content styles */
-    .viewer-content {
-      max-width: 720px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    .viewer-content h1,
-    .viewer-content h2,
-    .viewer-content h3,
-    .viewer-content h4 {
-      color: var(--text);
-      margin: 1.5em 0 0.6em;
-      line-height: 1.3;
+    .card {
+      background: #fff;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .viewer-content h1 { font-size: 1.6rem; color: var(--canyon-light); }
-    .viewer-content h2 { font-size: 1.25rem; }
-    .viewer-content h3 { font-size: 1.05rem; color: var(--accent); }
-
-    .viewer-content p {
-      color: var(--muted);
-      margin-bottom: 1em;
-      line-height: 1.75;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
     }
 
-    .viewer-content ul, .viewer-content ol {
-      color: var(--muted);
-      padding-left: 1.5em;
-      margin-bottom: 1em;
-    }
-
-    .viewer-content li { margin-bottom: 0.3em; }
-
-    .viewer-content a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    .viewer-content a:hover { text-decoration: underline; }
-
-    .viewer-content table {
-      border-collapse: collapse;
+    .card img {
       width: 100%;
-      margin-bottom: 1em;
-      font-size: 0.88rem;
-    }
-    .viewer-content th {
-      background: var(--surface);
-      color: var(--text);
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      text-align: left;
-    }
-    .viewer-content td {
-      padding: 7px 12px;
-      border: 1px solid var(--border);
-      color: var(--muted);
+      height: 240px;
+      object-fit: cover;
+      display: block;
     }
 
-    .viewer-content img {
-      max-width: 100%;
-      border-radius: 6px;
-      margin: 1em 0;
-      opacity: 0.85;
+    .card-body {
+      padding: 1rem 1.2rem 1.3rem;
     }
 
-    .viewer-content .Alert, .viewer-content .AlertBox {
-      background: rgba(210,153,34,0.1);
-      border: 1px solid var(--orange);
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin-bottom: 1em;
-      color: var(--orange);
+    .card-body h2 {
+      font-size: 1.15rem;
+      color: #c0405a;
+      margin-bottom: 0.3rem;
     }
 
-    /* EMPTY STATE */
-    .empty {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
+    .card-body p {
+      font-size: 0.95rem;
+      color: #6b5045;
+      line-height: 1.5;
+    }
+
+    footer {
       text-align: center;
-      padding: 40px;
-    }
-
-    .empty-icon { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
-    .empty-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .empty-body { font-size: 0.85rem; max-width: 380px; line-height: 1.6; }
-    .empty-body code { font-family: var(--mono); color: var(--canyon-light); }
-
-    /* LOAD FROM FILE */
-    .load-area {
-      border: 1px dashed var(--border-bright);
-      border-radius: 8px;
-      padding: 20px;
-      text-align: center;
-      margin-top: 20px;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-    .load-area:hover { border-color: var(--canyon); color: var(--canyon-light); }
-
-    /* TOAST */
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: var(--surface);
-      border: 1px solid var(--border-bright);
-      border-radius: 8px;
-      padding: 10px 18px;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--text);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      transform: translateY(80px);
-      opacity: 0;
-      transition: all 0.25s;
-      z-index: 999;
-    }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.green { border-color: var(--green); color: var(--green); }
-    .toast.red   { border-color: var(--red);   color: var(--red); }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
-
-    @media (max-width: 640px) {
-      .sidebar { width: 100%; position: absolute; z-index: 50; }
+      padding: 2rem;
+      color: #b09080;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <span class="logo-icon">⛰</span>
-    Grand Canyon — Offline Guide
-  </div>
-  <div class="header-actions">
-    <div class="storage-badge" id="storageBadge">IndexedDB: empty</div>
-    <button class="btn primary" onclick="loadFromSite()">Download All</button>
-    <button class="btn" onclick="loadFromFiles()">Load files</button>
-    <button class="btn" onclick="saveCurrentPage()">Save Page</button>
-    <button class="btn danger" onclick="clearStorage()">Clear</button>
-  </div>
+  <h1>🐱 Cute Cats</h1>
+  <p>The internet's most important resource</p>
 </header>
 
-<div class="app">
-  <div class="sidebar">
-    <div class="sidebar-top">
-      <input id="search" type="text" placeholder="Search pages..." oninput="filterPages()">
-      <div class="page-count" id="pageCount">0 pages</div>
+<div class="grid">
+
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=1" alt="cute cat" />
+    <div class="card-body">
+      <h2>Loaf Mode Activated</h2>
+      <p>Maximum comfort achieved. Do not disturb unless you have snacks.</p>
     </div>
-    <div class="page-list" id="pageList"></div>
   </div>
 
-  <div class="main">
-    <div id="emptyState" class="empty">
-      <div class="empty-icon">⛰</div>
-      <div class="empty-title">No pages loaded</div>
-      <div class="empty-body">
-        Run <code>python3 scraper.py</code> to download the NPS Grand Canyon pages,
-        then click <strong>Load data/</strong> to import them into offline storage.
-        <br><br>
-        Or drag &amp; drop the <code>data/</code> folder JSON files here.
-      </div>
-      <div class="load-area" onclick="loadFromFiles()" id="dropZone">
-        Click to load JSON files — or drag &amp; drop them here
-      </div>
-    </div>
-
-    <div id="contentView" style="display:none; flex-direction:column; flex:1; overflow:hidden;">
-      <div class="content-bar">
-        <div>
-          <div class="content-title" id="contentTitle"></div>
-          <div class="content-url" id="contentUrl"></div>
-        </div>
-        <div class="content-meta">
-          <div class="scraped-at" id="scrapedAt"></div>
-          <button class="btn primary" onclick="saveCurrentPage()">Save to storage</button>
-        </div>
-      </div>
-      <div class="viewer">
-        <div class="viewer-content" id="viewerContent"></div>
-      </div>
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=2" alt="cute cat" />
+    <div class="card-body">
+      <h2>Expert Napper</h2>
+      <p>Studies show cats sleep 16 hours a day. This one is working overtime.</p>
     </div>
   </div>
+
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=3" alt="cute cat" />
+    <div class="card-body">
+      <h2>Tiny Bean Toes</h2>
+      <p>Scientifically proven to cure a bad day. Handle with care.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=4" alt="cute cat" />
+    <div class="card-body">
+      <h2>Judgment in Progress</h2>
+      <p>You have been assessed. The verdict: acceptable human, for now.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=5" alt="cute cat" />
+    <div class="card-body">
+      <h2>Box Inspector</h2>
+      <p>If it fits, it sits. This is not a suggestion — it is law.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <img src="https://cataas.com/cat/cute?width=600&height=480&t=6" alt="cute cat" />
+    <div class="card-body">
+      <h2>Midnight Zoomies Champion</h2>
+      <p>3am. No reason. Full speed. This is the way.</p>
+    </div>
+  </div>
+
 </div>
 
-<div class="toast" id="toast"></div>
+<footer>
+  Made with 🐾 and an excessive amount of affection for cats.
+</footer>
 
-<input type="file" id="fileInput" multiple accept=".json" style="display:none" onchange="handleFileInput(event)">
-
-<script>
-// ── IndexedDB setup ──────────────────────────────────────────────────────────
-const DB_NAME = 'grand-canyon-offline';
-const DB_VERSION = 1;
-const STORE = 'pages';
-
-let db = null;
-let allPages = [];     // all pages in memory
-let filtered = [];
-let currentPage = null;
-
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = e => {
-      const d = e.target.result;
-      if (!d.objectStoreNames.contains(STORE)) {
-        const s = d.createObjectStore(STORE, { keyPath: 'key' });
-        s.createIndex('title', 'title', { unique: false });
-        s.createIndex('url',   'url',   { unique: false });
-      }
-    };
-    req.onsuccess = e => { db = e.target.result; resolve(db); };
-    req.onerror   = e => reject(e.target.error);
-  });
-}
-
-function dbGetAll() {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, 'readonly');
-    const req = tx.objectStore(STORE).getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror   = () => reject(req.error);
-  });
-}
-
-function dbPut(record) {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, 'readwrite');
-    const req = tx.objectStore(STORE).put(record);
-    req.onsuccess = () => resolve();
-    req.onerror   = () => reject(req.error);
-  });
-}
-
-function dbClear() {
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE, 'readwrite');
-    const req = tx.objectStore(STORE).clear();
-    req.onsuccess = () => resolve();
-    req.onerror   = () => reject(req.error);
-  });
-}
-
-// ── URL key helper ───────────────────────────────────────────────────────────
-function urlToKey(url) {
-  try {
-    const p = new URL(url);
-    return (p.pathname.replace(/\/$/, '') || '/grca/index').replace(/\//g, '_').replace(/^_/, '');
-  } catch {
-    return url.replace(/[^a-z0-9]/gi, '_');
-  }
-}
-
-// ── Render sidebar ───────────────────────────────────────────────────────────
-function renderList(pages) {
-  const list = document.getElementById('pageList');
-  const storedKeys = new Set(allPages.map(p => p.key));
-  list.innerHTML = '';
-
-  if (pages.length === 0) {
-    list.innerHTML = '<div style="padding:16px;font-size:0.78rem;color:#444d56;">No matches</div>';
-    return;
-  }
-
-  pages.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'page-item' + (currentPage && currentPage.key === p.key ? ' active' : '');
-    div.onclick = () => showPage(p);
-
-    const shortUrl = p.url.replace('https://www.nps.gov', '');
-    div.innerHTML = `
-      <div class="page-item-title">${escHtml(p.title)}${storedKeys.has(p.key) ? '<span class="saved-dot" title="Saved"></span>' : ''}</div>
-      <div class="page-item-url">${escHtml(shortUrl)}</div>
-    `;
-    list.appendChild(div);
-  });
-}
-
-function filterPages() {
-  const q = document.getElementById('search').value.toLowerCase();
-  filtered = q
-    ? allPages.filter(p => p.title.toLowerCase().includes(q) || p.url.toLowerCase().includes(q))
-    : [...allPages];
-  document.getElementById('pageCount').textContent = `${filtered.length} of ${allPages.length} pages`;
-  renderList(filtered);
-}
-
-// ── Show a page ──────────────────────────────────────────────────────────────
-function showPage(page) {
-  currentPage = page;
-  document.getElementById('emptyState').style.display = 'none';
-  const cv = document.getElementById('contentView');
-  cv.style.display = 'flex';
-
-  document.getElementById('contentTitle').textContent = page.title;
-  document.getElementById('contentUrl').textContent   = page.url;
-  document.getElementById('scrapedAt').textContent    = page.scraped_at ? `scraped ${page.scraped_at.slice(0,10)}` : '';
-
-  // Sanitize and render — rewrite NPS links to internal navigation
-  let html = page.html || '<p>No content.</p>';
-  // Make links navigate within the app
-  html = html.replace(/href="(https?:\/\/www\.nps\.gov\/grca\/[^"#?]*)"/g, (_, url) => {
-    return `href="#" onclick="navigateTo('${url.replace(/'/g, "\\'")}');return false;"`;
-  });
-  document.getElementById('viewerContent').innerHTML = html;
-
-  // Re-mark active item in sidebar
-  document.querySelectorAll('.page-item').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.page-item').forEach(el => {
-    if (el.querySelector('.page-item-url')?.textContent === page.url.replace('https://www.nps.gov', '')) {
-      el.classList.add('active');
-    }
-  });
-}
-
-function navigateTo(url) {
-  const key = urlToKey(url);
-  const page = allPages.find(p => p.key === key || p.url === url);
-  if (page) showPage(page);
-  else toast(`Page not downloaded: ${url.replace('https://www.nps.gov','')}`, 'red');
-}
-
-// ── Load from site (GitHub Pages) ────────────────────────────────────────────
-async function loadFromSite() {
-  const base = window.location.href.replace(/\/[^\/]*$/, '/').replace(/\/$/, '') + '/';
-  toast('Fetching index...', '');
-
-  let index;
-  try {
-    const r = await fetch(base + 'data/index.json');
-    if (!r.ok) throw new Error(`index.json: ${r.status}`);
-    index = await r.json();
-  } catch (e) {
-    toast('Failed to load index: ' + e.message, 'red');
-    return;
-  }
-
-  let count = 0;
-  const total = index.length;
-  for (const entry of index) {
-    try {
-      const r = await fetch(base + entry.file);
-      if (!r.ok) continue;
-      const data = await r.json();
-      const record = {
-        key:        entry.key,
-        url:        data.url,
-        title:      data.title || entry.title,
-        html:       data.html  || '',
-        scraped_at: data.scraped_at || null,
-      };
-      await dbPut(record);
-      count++;
-      if (count % 20 === 0) toast(`Downloaded ${count}/${total}...`, '');
-    } catch { /* skip */ }
-  }
-
-  await refreshFromDB();
-  toast(`Downloaded ${count} pages into offline storage`, 'green');
-}
-
-// ── Load files ───────────────────────────────────────────────────────────────
-function loadFromFiles() {
-  document.getElementById('fileInput').click();
-}
-
-async function handleFileInput(e) {
-  const files = Array.from(e.target.files).filter(f => f.name.endsWith('.json') && f.name !== 'index.json');
-  if (!files.length) return;
-
-  let count = 0;
-  for (const file of files) {
-    try {
-      const text = await file.text();
-      const data = JSON.parse(text);
-      if (!data.url) continue;
-      const record = {
-        key:        data.key || urlToKey(data.url),
-        url:        data.url,
-        title:      data.title || data.url,
-        html:       data.html  || '',
-        scraped_at: data.scraped_at || null,
-      };
-      await dbPut(record);
-      count++;
-    } catch { /* skip bad files */ }
-  }
-
-  await refreshFromDB();
-  toast(`Loaded ${count} pages into offline storage`, 'green');
-  e.target.value = '';
-}
-
-// ── Drop zone ────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  const drop = document.getElementById('dropZone');
-  if (!drop) return;
-
-  ['dragover', 'dragenter'].forEach(ev =>
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.style.borderColor = 'var(--canyon-light)'; })
-  );
-  ['dragleave', 'dragend'].forEach(ev =>
-    drop.addEventListener(ev, () => { drop.style.borderColor = ''; })
-  );
-  drop.addEventListener('drop', async e => {
-    e.preventDefault();
-    drop.style.borderColor = '';
-    const files = Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.json'));
-    const fakeEvt = { target: { files, value: '' } };
-    fakeEvt.target.value = '';
-    await handleFileInput({ target: { files } });
-  });
-});
-
-// ── Save current page ────────────────────────────────────────────────────────
-async function saveCurrentPage() {
-  if (!currentPage) { toast('No page selected', 'red'); return; }
-  await dbPut(currentPage);
-  updateStorageBadge();
-  toast(`Saved: ${currentPage.title}`, 'green');
-  renderList(filtered.length ? filtered : allPages);
-}
-
-// ── Clear storage ────────────────────────────────────────────────────────────
-async function clearStorage() {
-  if (!confirm('Clear all offline storage?')) return;
-  await dbClear();
-  allPages = [];
-  filtered = [];
-  currentPage = null;
-  renderList([]);
-  document.getElementById('pageCount').textContent = '0 pages';
-  document.getElementById('emptyState').style.display = 'flex';
-  document.getElementById('contentView').style.display = 'none';
-  updateStorageBadge();
-  toast('Storage cleared', 'red');
-}
-
-// ── Refresh from DB ──────────────────────────────────────────────────────────
-async function refreshFromDB() {
-  allPages = await dbGetAll();
-  allPages.sort((a, b) => a.title.localeCompare(b.title));
-  filtered = [...allPages];
-  document.getElementById('pageCount').textContent = `${allPages.length} pages`;
-  renderList(filtered);
-  updateStorageBadge();
-  if (allPages.length && !currentPage) {
-    document.getElementById('emptyState').style.display = 'flex';
-  }
-}
-
-function updateStorageBadge() {
-  const badge = document.getElementById('storageBadge');
-  badge.textContent = `IndexedDB: ${allPages.length} pages`;
-  badge.className   = 'storage-badge' + (allPages.length ? ' has-data' : '');
-}
-
-// ── Toast ────────────────────────────────────────────────────────────────────
-let toastTimer = null;
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className   = 'toast show' + (type ? ` ${type}` : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = 'toast'; }, 2800);
-}
-
-// ── Escape HTML ──────────────────────────────────────────────────────────────
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ── Boot ─────────────────────────────────────────────────────────────────────
-(async () => {
-  await openDB();
-  await refreshFromDB();
-  if (allPages.length > 0) {
-    document.getElementById('emptyState').style.display = 'flex';
-  }
-})();
-</script>
 </body>
 </html>

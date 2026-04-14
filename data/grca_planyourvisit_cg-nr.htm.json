@@ -1,6 +1,0 @@
-{
-  "url": "https://www.nps.gov/grca/planyourvisit/cg-nr.htm",
-  "title": "NPS - Page In-Progress",
-  "html": "<body>\n<table cellpadding=\"3\" cellspacing=\"0\" width=\"750\">\n<tr>\n<td>\n<img alt=\"National Park Service Logo\" border=\"0\" height=\"70\" src=\"/templates/images/graphics/parkblackband.gif\" usemap=\"#banner\" width=\"750\"/><map name=\"banner\"><area alt=\"U.S. Department of the Interior\" coords=\"517,26,680,36\" href=\"http://www.doi.gov\" shape=\"rect\" target=\"_blank\" title=\"U.S. Department of the Interior\"/><area alt=\"National Park Service\" coords=\"697,7,744,62\" href=\"/\" shape=\"rect\" title=\"National Park Service\"/><area alt=\"National Park Service\" coords=\"3,6,129,60\" href=\"/\" shape=\"rect\" title=\"National Park Service\"/></map>\n</td>\n</tr>\n<tr>\n<td><span style=\"font-family: Verdana, sans-serif; font-size:14px\"><b>Page In-Progress</b></span><hr/>\r\n\t\t\t\tThis page is currently being worked on.  Please check back later.<br/><br/>\n<a href=\"/\">NPS Home</a>\n</td>\n</tr>\n</table>\n</body>",
-  "scraped_at": "2026-04-06T13:53:21Z"
-}
